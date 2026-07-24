@@ -2,6 +2,8 @@ import {Module} from '@nestjs/common';
 import {AppController} from './app.controller';
 import {AppService} from './app.service';
 import {ClientsModule, Transport} from "@nestjs/microservices";
+import {AuthModule} from './auth/auth.module';
+import {AuthController} from "./auth/auth.controller";
 
 @Module({
   imports: [
@@ -70,9 +72,10 @@ import {ClientsModule, Transport} from "@nestjs/microservices";
           queue: "PROMOTIONS_QUEUE",
         }
       }
-    ])
+    ]),
+    AuthModule
   ],
-  controllers: [AppController],
+  controllers: [AppController, AuthController],
   providers: [AppService],
 })
 export class AppModule {
