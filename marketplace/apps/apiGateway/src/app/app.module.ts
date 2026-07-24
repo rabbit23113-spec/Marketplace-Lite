@@ -4,6 +4,8 @@ import {AppService} from './app.service';
 import {ClientsModule, Transport} from "@nestjs/microservices";
 import {AuthModule} from './auth/auth.module';
 import {AuthController} from "./auth/auth.controller";
+import {SagaModule} from './saga/saga.module';
+import {SagaController} from "./saga/saga.controller";
 
 @Module({
   imports: [
@@ -71,11 +73,20 @@ import {AuthController} from "./auth/auth.controller";
           urls: ["amqp://rabbitmq:5672"],
           queue: "PROMOTIONS_QUEUE",
         }
+      },
+      {
+        name: "PAYMENTS_CLIENT",
+        transport: Transport.RMQ,
+        options: {
+          urls: ["amqp://rabbitmq:5672"],
+          queue: "PAYMENTS_QUEUE",
+        }
       }
     ]),
-    AuthModule
+    AuthModule,
+    SagaModule
   ],
-  controllers: [AppController, AuthController],
+  controllers: [AppController, AuthController, SagaController],
   providers: [AppService],
 })
 export class AppModule {
